@@ -1,7 +1,7 @@
 import prismadb from "@/lib/prismadb";
-import { BillboardForm } from "./components/billboard-form";
+import { BillboardForm } from "../../billboards/[billboardId]/components/billboard-form";
 
-const BillboardPage = async ({
+const CategoriesPage = async ({
   params,
 }: {
   params: { billboardId: string };
@@ -20,4 +20,4 @@ const BillboardPage = async ({
   );
 };
 
-export default BillboardPage;
+export default CategoriesPage;
