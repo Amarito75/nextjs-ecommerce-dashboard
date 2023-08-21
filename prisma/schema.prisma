@@ -17,6 +17,8 @@ model Store {
   userId  String
   billboards  Billboard[] @relation("StoreToBillboard")
   categories Category[] @relation("StoreToCategory")
+  medias  Media[] @relation("StoreToMedia")
+  products  Product[] @relation("StoreToProduct")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -40,10 +42,57 @@ model Category {
   store Store @relation("StoreToCategory", fields: [storeId], references: [id])
   billboardId String
   billboard Billboard @relation(fields: [billboardId], references: [id])
+  products Product[] @relation("CategoryToProduct")
   name String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([storeId])
   @@index([billboardId])
+}
+
+model Media {
+  id  String @id @default(uuid())
+  storeId String
+  store Store @relation("StoreToMedia", fields: [storeId], references: [id])
+  name  String
+  value String
+  products Product[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+model Product {
+  id  String @id @default(uuid())
+  storeId String
+  store Store @relation("StoreToProduct", fields: [storeId], references: [id])
+  categoryId String
+  category Category @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  name String
+  price Decimal
+  isFeatured Boolean @default(false)
+  isArchive Boolean @default(false)
+  mediaId String
+  media Media @relation(fields: [mediaId], references: [id])
+  image Image[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([mediaId])
+  @@index([categoryId])
+  @@index([storeId])
+
+}
+
+model Image {
+  id String @id @default(uuid())
+  productId String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([productId])
 }
