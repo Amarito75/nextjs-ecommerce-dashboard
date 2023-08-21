@@ -26,7 +26,16 @@ export function MainNav({
       label: "Categories",
       active: pathname === `${params.storeId}/categories`,
     },
-
+    {
+      href: `/${params.storeId}/medias`,
+      label: "Medias",
+      active: pathname === `${params.storeId}/medias`,
+    },
+    {
+      href: `/${params.storeId}/products`,
+      label: "Products",
+      active: pathname === `${params.storeId}/products`,
+    },
     {
       href: `/${params.storeId}/settings`,
       label: "Settings",
