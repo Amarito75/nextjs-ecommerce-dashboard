@@ -19,6 +19,7 @@ model Store {
   categories Category[] @relation("StoreToCategory")
   medias  Media[] @relation("StoreToMedia")
   products  Product[] @relation("StoreToProduct")
+  orders Order[] @relation("StoreToOrder")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -73,7 +74,7 @@ model Product {
   name String
   price Decimal
   isFeatured Boolean @default(false)
-  isArchive Boolean @default(false)
+  isArchived Boolean @default(false)
   mediaId String
   media Media @relation(fields: [mediaId], references: [id])
   image Image[]
@@ -95,4 +96,26 @@ model Image {
   updatedAt DateTime @updatedAt
 
   @@index([productId])
+}
+
+model Order {
+  id String @id @default(uuid())
+  storeId String
+  store Store @relation("StoreToOrder", fields: [storeId], references: [id])
+  orderItems OrderItem[]
+  isPaid Boolean @default(false)
+  phone String @default("")
+  address String @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+model OrderItem {
+  id String @id @default(uuid())
+  orderId String
+  order Order @relation(fields: [orderId], references: [id])
+  productId String
+  product Product @relation(fields: [productId], references: [id])
 }
